@@ -1,0 +1,1 @@
+all assets of the app like logo, icons etc will be in this folder and most important file index.html where whole react application is rendered  is also in this directory.

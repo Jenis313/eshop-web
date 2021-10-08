@@ -1,0 +1,1 @@
+This is the place where we place component realted files and previously when created react app using react generator all the files were messy they were scattered all over but now we are going to manage all the files and put them into seperate folders
