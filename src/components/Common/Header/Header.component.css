@@ -1,0 +1,15 @@
+.nav_bar{
+    height: 45px;
+    background-color: black;
+    color: white;
+    width: 100%;
+}
+.nav_list{
+    list-style-type: none;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+}
+.nav_item{
+}
