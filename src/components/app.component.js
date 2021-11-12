@@ -1,15 +1,11 @@
 import React from 'react'; 
-import {Header} from './Common/Header/Header.component';
-import LoginComponent from './Auth/login/Login.component';
-import RegisterComponent from './Auth/Register/Register.component';
 import './global_styles.css';
+import AppRouting from './app.routing';
 function App(args){
 console.log(args)
     return (
         <div className="main">
-            <Header isLoggedIn="true" />
-            <LoginComponent />
-            {/* <RegisterComponent /> */}
+            <AppRouting></AppRouting>
         </div>
     )
 }

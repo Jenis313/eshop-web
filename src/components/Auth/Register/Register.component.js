@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import SubmitButton from '../../Common/SubmitBtn/SubmitBtn.component';
+import { Link } from 'react-router-dom';
 const defaultForm = {
     name : '',
     email : '',
@@ -22,7 +23,8 @@ class RegisterComponent extends Component{
            error : {
                ...defaultForm
            },
-           isSubmitting : false
+           isSubmitting : false,
+           isValidForm: false
        }
        this.handleChange = this.handleChange.bind(this)
        this.handleSubmit = this.handleSubmit.bind(this)
@@ -52,10 +54,34 @@ class RegisterComponent extends Component{
                 break;
             
             case 'password': 
+                errMsg = this.state.data['confirmPassword']
+                    ? this.state.data['confirmPassword'] === this.state.data[fieldName]
+                        ? ''
+                        : 'Password didnt match'
+                    : this.state.data[fieldName] 
+                        ? this.state.data[fieldName].length > 6 
+                            ? '' : 'Weak password'
+                        : 'Required field'
+
+                break;
+
+            case 'email': 
                 errMsg = this.state.data[fieldName] 
-                    ? this.state.data[fieldName].length > 6 
-                        ? '' : 'Weak password'
+                    ? this.state.data[fieldName].includes('@') &&  this.state.data[fieldName].includes('.com')
+                        ? '' : 'Invalid email'
                     : 'Required field'
+                break;
+            
+            case 'confirmPassword' : 
+            errMsg = this.state.data['password']
+                ? this.state.data[fieldName] === this.state.data['password']
+                    ? ''
+                    : 'Password didnnot match'
+                :this.state.data[fieldName]
+                    ? this.state.data[fieldName].length > 6
+                        ?  ''
+                        : 'Weak password'
+                    : 'required field*'
                 break;
 
            default:
@@ -64,11 +90,17 @@ class RegisterComponent extends Component{
        this.setState((prevState) => {
            return {
                error : {
-                   ...prevState,
+                   ...prevState.error,
                    [fieldName] : errMsg
                }
            }
        }, () => {
+        //    disable btn if there is an error
+        const errors = Object.values(this.state.error).filter(err => err);
+        // console.log(errors)
+        this.setState({
+            isValidForm : errors.length === 0
+        })
 
        })
    }
@@ -88,6 +120,7 @@ class RegisterComponent extends Component{
 
                     <label>Email</label>
                     <input type = 'text' placeholder = "Email" name = 'email' className = 'form-control' onChange = {this.handleChange}></input>
+                    <p className = 'form-err'>{error.email}</p>
 
                     <label>Phone Number</label>
                     <input type = 'numnber' name = 'phoneNumber' className = 'form-control' onChange = {this.handleChange}></input>
@@ -102,10 +135,17 @@ class RegisterComponent extends Component{
 
 
                     <label>Conform Password</label>
-                    <input type = 'password' placeholder = "Conform Password" name = 'conformPassword' className = 'form-control' onChange = {this.handleChange}></input>
+                    <input type = 'password' placeholder = "Conform Password" name = 'confirmPassword' className = 'form-control' onChange = {this.handleChange}></input>
+                    <p className = 'form-err'>{error.confirmPassword}</p>
+
 
                     <label>Gender</label>
-                    <input type = 'text' placeholder = "Gender" name = 'gender' className = 'form-control' onChange = {this.handleChange}></input>
+                    <br />
+                    <input type = 'radio' name = 'gender' value = "male" onChange = {this.handleChange}></input>Male
+                    <input type = 'radio' name = 'gender' value = "female" onChange = {this.handleChange}></input>Female
+                    <input type = 'radio' name = 'gender' value = "others" onChange = {this.handleChange}></input>Others
+
+                    <br />
 
                     <label>Date of birth</label>
                     <input type = 'date' name = 'dob' className = 'form-control' onChange = {this.handleChange}></input>
@@ -116,7 +156,9 @@ class RegisterComponent extends Component{
                     <label>Permanent Address</label>
                     <input type = 'text' placeholder = "Permanent Address" name = 'permanentAddress' className = 'form-control' onChange = {this.handleChange}></input>
 
-                    <SubmitButton isSubmitting = {this.state.isSubmitting}></SubmitButton>
+                    <SubmitButton isDisabled = {!this.state.isValidForm} isSubmitting = {this.state.isSubmitting}></SubmitButton>
+                    <p>Already have an account? <Link to = "/">Login</Link></p>
+
                 </form>
             </div>
        )

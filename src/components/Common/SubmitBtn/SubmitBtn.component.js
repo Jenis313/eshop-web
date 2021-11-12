@@ -12,7 +12,7 @@ function SubmitButton(props){
                 }
             } src={disabledLabel} />
         </button>  :
-        <button className = "btn btn-dark" style = {{ width : '100px'}}>{enabledLabel}</button>
+        <button disabled = {props.isDisabled} className = "btn btn-dark" style = {{ width : '100px'}} >{enabledLabel}</button>
     return btn
 }
 export default SubmitButton

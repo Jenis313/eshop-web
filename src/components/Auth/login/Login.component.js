@@ -1,5 +1,6 @@
 import {Component} from "react";
 import SubmitButton from "../../Common/SubmitBtn/SubmitBtn.component";
+import {Link, useNavigate} from 'react-router-dom'
 // We are trying to make stateful component so we are using class based component
 
 const defaultForm = {
@@ -58,6 +59,7 @@ handleChange(event){
         // form validation
         if(this.state.error[name]){
             this.validateForm();
+            // this validateForm will only run when there is error in the field(name) but as soon as you start typing it will not run because the field is no more empty
         }
     })
 }
@@ -87,10 +89,16 @@ submit(event){
 
     console.log(this.state);
     setTimeout(() => {
-        this.setState({
-            isSubmitting: false
+        // let navigate = useNavigate();
+        // this.setState({
+        //     isSubmitting: false
+        // })
+        this.props.history.push({
+            pathname : '/setting/Ram',
+            name: this.state.data.username
         })
-    }, 4000)
+        // navigate('/home');
+    }, 2000)
 }
     render(){
         // try to keep UI logic inside render before return 
@@ -116,7 +124,10 @@ submit(event){
                         <label> &nbsp; Remember me</label>
                         <hr/>
                         <SubmitButton isSubmitting = {this.state.isSubmitting} enabledLabel = "Login"/>
-                        <p>Don't have an account? <a href = "#">Register</a></p>
+                        <p>Don't have an account? <Link to = "/register">Register</Link></p>
+                        <p>
+                            <Link to = "/forget-password">forget Password?</Link>
+                        </p>
                     </form>
                 </div>
             )

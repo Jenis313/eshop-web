@@ -11,5 +11,16 @@
     align-items: center;
     height: 100%;
 }
-.nav_item{
+.nav_item a{
+    color: #fff;
+    text-decoration: none;
+}
+.nav_item a:hover{
+    color: #ddd
+}
+.nav_item a:active{
+    color: chartreuse;
+}
+.selected{
+    border-bottom:1px solid white;
 }
