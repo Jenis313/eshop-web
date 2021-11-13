@@ -1,9 +1,15 @@
 // functional component
 import React from "react";
 import './Header.component.css';
-import { NavLink } from "react-router-dom";
-export const Header = (props) => {
-    console.log('Props in header --> ', props)
+import { NavLink, withRouter } from "react-router-dom";
+
+function logout(history){
+    // localStorage.clear();
+    history.push('/')
+}
+
+const HeaderComponent = (props) => {
+    // console.log('Props in header --> ', props)
     // incomeing arguments are props
     let content;
      if(props.isLoggedIn){
@@ -12,7 +18,7 @@ export const Header = (props) => {
                         <li className = "nav_item"><NavLink activeClassName = "selected" to = '/about'>About</NavLink></li>
                         <li className = "nav_item"><NavLink activeClassName = "selected" to = '/contact'>Contact</NavLink></li>
                         <li className = "nav_item"><NavLink activeClassName = "selected" to = '/setting'>Setting</NavLink></li>
-                        <button className = "nav_item btn btn-success">Logout</button>
+                        <button onClick = {() => logout(props.history)} className = "nav_item btn btn-success">Logout</button>
                     </ul>
      }else{
          content = <ul className = "nav_list">
@@ -27,3 +33,4 @@ export const Header = (props) => {
         </div>
     )
 }
+export const Header = withRouter(HeaderComponent )

@@ -32,7 +32,11 @@ class LoginComponent extends Component{
         console.log('at first');
     } 
     componentDidMount(){
-        console.log("Self invoked function")
+        // console.log("Self invoked function")
+        let remember_me = localStorage.getItem('remember_me')
+        if(remember_me === 'true'){
+            this.props.history.push('home')
+        }
 
     }
 handleChange(event){
@@ -97,7 +101,10 @@ submit(event){
             pathname : '/setting/Ram',
             name: this.state.data.username
         })
+        // once http response received -> store token in local storage
         // navigate('/home');
+
+        localStorage.setItem('remember_me', this.state.remember_me)
     }, 2000)
 }
     render(){
