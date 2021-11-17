@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import SubmitButton from '../../Common/SubmitBtn/SubmitBtn.component';
 import { Link } from 'react-router-dom';
+import {notify} from './../../../utils/notify';
+import axios from 'axios';
+const BASE_URL = 'http://localhost:4070/api'
 const defaultForm = {
     name : '',
-    email : '',
+    emailaddress : '',
     phoneNumber : '',
     username : '',
     password : '',
@@ -65,7 +68,7 @@ class RegisterComponent extends Component{
 
                 break;
 
-            case 'email': 
+            case 'emailaddress': 
                 errMsg = this.state.data[fieldName] 
                     ? this.state.data[fieldName].includes('@') &&  this.state.data[fieldName].includes('.com')
                         ? '' : 'Invalid email'
@@ -106,12 +109,38 @@ class RegisterComponent extends Component{
    }
 
    handleSubmit(e){
+    //    console.log('state---->', this.state.data);
+    this.setState({
+        isSubmitting: true
+    })
        e.preventDefault() 
+       axios.post(`${BASE_URL}/auth/register`, this.state.data, {
+           headers: { 
+                'Content-Type' : 'application/json'
+           },
+           params : {
+
+           },
+           timeout: 10000,
+           timeoutErrorMessage : 'Timeout',
+           responseType : 'json'
+       })
+       .then((response) => {
+        //    console.log('response is -> ', response);
+        notify.showSuccess('Register Successful')
+
+       })
+       .catch((err) => {
+           console.log(err);
+           this.setState({
+               isSubmitting: false
+           })
+       })
    }
    render(){
        const {error} = this.state;
        return (
-            <div>
+            <div className = "container">
                 <h2>Register</h2>
                 <p>Please register to continue</p>
                 <form onSubmit = {this.handleSubmit}>
@@ -119,7 +148,7 @@ class RegisterComponent extends Component{
                     <input type = 'text' placeholder = "Name" name = 'name' className = 'form-control' onChange = {this.handleChange}></input>
 
                     <label>Email</label>
-                    <input type = 'text' placeholder = "Email" name = 'email' className = 'form-control' onChange = {this.handleChange}></input>
+                    <input type = 'text' placeholder = "Email" name = 'emailaddress' className = 'form-control' onChange = {this.handleChange}></input>
                     <p className = 'form-err'>{error.email}</p>
 
                     <label>Phone Number</label>

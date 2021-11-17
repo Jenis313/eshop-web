@@ -1,0 +1,1 @@
+This folder is for some repeated chunk of code which is used many places and if there is need to change in one place we also have to change everywere but if we put it in here we will change only in here.

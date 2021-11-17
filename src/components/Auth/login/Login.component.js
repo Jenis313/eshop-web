@@ -2,6 +2,11 @@ import {Component} from "react";
 import SubmitButton from "../../Common/SubmitBtn/SubmitBtn.component";
 import {Link, useNavigate} from 'react-router-dom'
 // We are trying to make stateful component so we are using class based component
+import axios from "axios";
+import {notify} from './../../../utils/notify';
+import {ErrorHander} from './../../../utils/error.handler'
+import { redirectToDashboad } from "../../../services/redirection";
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 const defaultForm = {
     username: '',
@@ -83,29 +88,59 @@ validateForm(){
 }
 submit(event){
     event.preventDefault();
+    // console.log(this.state.data)
+
     const isValid = this.validateForm();
     if(!isValid){
         return
     }
+
+
     this.setState({
-        isSubmitting : true
+        isSubmitting: true
     })
-
-    console.log(this.state);
-    setTimeout(() => {
-        // let navigate = useNavigate();
-        // this.setState({
-        //     isSubmitting: false
-        // })
-        this.props.history.push({
-            pathname : '/setting/Ram',
-            name: this.state.data.username
+    
+    axios.post(`${BASE_URL}/auth/login`, this.state.data, {
+        headers: {
+            'Content-Type' : 'application/json'
+        }
+    })
+    .then((response) => {
+        // console.log(response);
+        localStorage.setItem('token', response.data.token)
+        localStorage.setItem('user', JSON.stringify(response.data.user))
+        localStorage.setItem('remember_me', this.state.remember_me);
+        redirectToDashboad(response.data.user.role, this.props.history)
+        notify.showSuccess(`Welcome ${response.data.user.username}`);
+    })
+    .catch((err) => {
+        console.log(err.response)
+        ErrorHander(err)
+        this.setState({
+            isSubmitting:false
         })
-        // once http response received -> store token in local storage
-        // navigate('/home');
+    })
+   
+    // this.setState({
+    //     isSubmitting : true
+    // })
 
-        localStorage.setItem('remember_me', this.state.remember_me)
-    }, 2000)
+    // // console.log(this.state);
+    // setTimeout(() => {
+    //     // let navigate = useNavigate();
+    //     // this.setState({
+    //     //     isSubmitting: false
+    //     // })
+    //     notify.showSuccess('done')
+    //     this.props.history.push({
+    //         pathname : '/setting/Ram',
+    //         name: this.state.data.username
+    //     })
+    //     // once http response received -> store token in local storage
+    //     // navigate('/home');
+
+    //     localStorage.setItem('remember_me', this.state.remember_me)
+    // }, 2000)
 }
     render(){
         // try to keep UI logic inside render before return 
@@ -117,7 +152,7 @@ submit(event){
         // }
         console.log("render at second")
             return (
-                <div>
+                <div className = "container">
                     <h2>login</h2>
                     <p>Please login to use hamro application</p>
                     <form className = "form-group" onSubmit = {this.submit}>

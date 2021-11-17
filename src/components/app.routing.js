@@ -6,10 +6,15 @@ import PageNotFound from "./Common/NotFound/PageNotFound.component";
 
 const Home = (props) => {
     console.log('Props in home --> ', props)
+    function handleBtn(){
+        console.log(props)
+        props.history.push('/')
+    }
     return(
-        <div>
+        <div className = 'container'>
             <p>Home page</p>
             <p>Welcome {props.location.name}</p>
+            <button onClick = {handleBtn}>LoginPage</button>
         </div>
     )
 }

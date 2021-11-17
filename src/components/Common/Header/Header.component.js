@@ -18,7 +18,7 @@ const HeaderComponent = (props) => {
                         <li className = "nav_item"><NavLink activeClassName = "selected" to = '/about'>About</NavLink></li>
                         <li className = "nav_item"><NavLink activeClassName = "selected" to = '/contact'>Contact</NavLink></li>
                         <li className = "nav_item"><NavLink activeClassName = "selected" to = '/setting'>Setting</NavLink></li>
-                        <button onClick = {() => logout(props.history)} className = "nav_item btn btn-success">Logout</button>
+                        <button onClick = {() => logout(props.history)} className = "nav_item btn btn-success">Logout <i className="fas fa-sign-out-alt"></i></button>
                     </ul>
      }else{
          content = <ul className = "nav_list">

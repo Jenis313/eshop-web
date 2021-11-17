@@ -13,3 +13,7 @@ body{
 .form-err{
     color: red
 }
+.container{
+    width: 80%;
+    margin: auto;
+}
