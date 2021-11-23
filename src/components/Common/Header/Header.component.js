@@ -4,12 +4,12 @@ import './Header.component.css';
 import { NavLink, withRouter } from "react-router-dom";
 
 function logout(history){
-    // localStorage.clear();
+    localStorage.clear();
     history.push('/')
 }
 
 const HeaderComponent = (props) => {
-    // console.log('Props in header --> ', props)
+    console.log('Props in header --> ', props)
     // incomeing arguments are props
     let content;
      if(props.isLoggedIn){

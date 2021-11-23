@@ -2,11 +2,12 @@ import {Component} from "react";
 import SubmitButton from "../../Common/SubmitBtn/SubmitBtn.component";
 import {Link, useNavigate} from 'react-router-dom'
 // We are trying to make stateful component so we are using class based component
-import axios from "axios";
 import {notify} from './../../../utils/notify';
 import {ErrorHander} from './../../../utils/error.handler'
 import { redirectToDashboad } from "../../../services/redirection";
-const BASE_URL = process.env.REACT_APP_BASE_URL;
+import { httpClient } from "../../../utils/httpClient";
+// const BASE_URL = process.env.REACT_APP_BASE_URL;
+// import axios from "axios";
 
 const defaultForm = {
     username: '',
@@ -100,11 +101,7 @@ submit(event){
         isSubmitting: true
     })
     
-    axios.post(`${BASE_URL}/auth/login`, this.state.data, {
-        headers: {
-            'Content-Type' : 'application/json'
-        }
-    })
+    httpClient.POST(`/auth/login`, this.state.data)
     .then((response) => {
         // console.log(response);
         localStorage.setItem('token', response.data.token)
@@ -150,7 +147,6 @@ submit(event){
         // }else{
         //     btn = <button className = "btn btn-dark">Login</button>
         // }
-        console.log("render at second")
             return (
                 <div className = "container">
                     <h2>login</h2>

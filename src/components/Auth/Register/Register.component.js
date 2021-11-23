@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import SubmitButton from '../../Common/SubmitBtn/SubmitBtn.component';
 import { Link } from 'react-router-dom';
 import {notify} from './../../../utils/notify';
-import axios from 'axios';
-const BASE_URL = 'http://localhost:4070/api'
+import { httpClient } from '../../../utils/httpClient';
+// import axios from 'axios';
+// const BASE_URL = 'http://localhost:4070/api'
 const defaultForm = {
     name : '',
     emailaddress : '',
@@ -114,17 +115,7 @@ class RegisterComponent extends Component{
         isSubmitting: true
     })
        e.preventDefault() 
-       axios.post(`${BASE_URL}/auth/register`, this.state.data, {
-           headers: { 
-                'Content-Type' : 'application/json'
-           },
-           params : {
-
-           },
-           timeout: 10000,
-           timeoutErrorMessage : 'Timeout',
-           responseType : 'json'
-       })
+       httpClient.POST(`/auth/register`, this.state.data)
        .then((response) => {
         //    console.log('response is -> ', response);
         notify.showSuccess('Register Successful')

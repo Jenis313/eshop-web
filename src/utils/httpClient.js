@@ -9,15 +9,40 @@ const http = axios.create({
     timeout: 20000,
     timeoutErrorMessage: 'Request Timeout'
 })
-const GET = (url, data, params) => {
-
+const getHeaders = () => {
+    let options = {
+        'Content-Type' : 'application/json'
+    }
+    return options;
 }
-const POST = (url, data, params) => {
-
+const GET = (url, params = {}) => {
+    return http.get(url, {
+        headers : getHeaders(),
+        params
+    })
 }
-const PUT = (url, data, params) => {
-
+const POST = (url, data, params = {}) => {
+    return http.post(url, data, {
+        headers : getHeaders(),
+        params
+    })
 }
-const DELETE = (url, data, params) => {
+const PUT = (url, data, params = {}) => {
+    return http.put(url, data, {
+        headers : getHeaders(),
+        params
+    })
+}
+const DELETE = (url, params) => {
+    return http.delete(url, {
+        headers : getHeaders(),
+        params
+    })
+}
 
+export const httpClient = {
+    GET,
+    POST,
+    PUT,
+    DELETE
 }

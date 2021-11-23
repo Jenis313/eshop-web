@@ -1,0 +1,9 @@
+.sidebar{
+    width: 150px;
+    background-color: #000;
+}
+.sidebar a{
+    text-decoration: none;
+    color: #fff;
+    display: block;
+}
