@@ -4,6 +4,7 @@ import RegisterComponent from "./Auth/Register/Register.component";
 import {Header} from './Common/Header/Header.component';
 import PageNotFound from "./Common/NotFound/PageNotFound.component";
 import Sider from "./Common/Sidebar/Sider.component";
+import AddProduct from "./Products/AddProduct/AddProduct.component";
 import { Dahsboard } from "./Users/Dashboard.component";
 
 const Home = (props) => {
@@ -43,12 +44,31 @@ const ProtectedRoute = ({component : Component, ...rest}) => {
     return (
         <Route {...rest} render = {(routeProps) => {
             return localStorage.getItem('token') 
-                    ? <Component {...routeProps}></Component>
+                    ? <div>
+                            <Header isLoggedIn = {true}></Header>
+                            <Sider></Sider>
+                            <div className = "display-main">
+                                <Component {...routeProps}></Component>
+                            </div>
+                        </div>
                     : <Redirect to = '/'></Redirect>
         }}></Route>
     )
 }
-
+const PublicRoute = ({component : Component, ...rest}) => {
+    return (
+        <Route {...rest} render = {(routeProps) => {
+            return (
+                <div>
+                    <Header></Header>
+                    <div className = "main">
+                        <Component {...routeProps}></Component>
+                    </div>
+                </div>
+            )
+        }}></Route>
+    )
+}
 // Now instead of putting all the components inside app.component.js we are putting inside BrowserRouter so that they can be rendered based on the path
 
 // Header is also inside BroserRouter because it has some elements inside like Link and NavLink so to use those elements which we are getting from React-router-dom we need to put Header inside BrowserRouter even though there is no route for Header component itself.
@@ -57,16 +77,15 @@ const ProtectedRoute = ({component : Component, ...rest}) => {
 function AppRouting(props){
     return (
         <BrowserRouter>
-            <Header isLoggedIn ={localStorage.getItem('token')}></Header>
-            <Sider></Sider>
             <Switch>
-                <Route exact path = "/" component = {LoginComponent}></Route>
-                <Route exact path = "/register" component = {RegisterComponent}></Route>
-                <Route exact path = "/about" component = {About}></Route>
-                <Route exact path = "/home" component = {Home}></Route>
-                <Route exact path = "/contact" component = {Contact}></Route>
+                <PublicRoute exact path = "/" component = {LoginComponent}></PublicRoute>
+                <PublicRoute exact path = "/register" component = {RegisterComponent}></PublicRoute>
+                <PublicRoute exact path = "/about" component = {About}></PublicRoute>
+                <PublicRoute exact path = "/home" component = {Home}></PublicRoute>
+                <PublicRoute exact path = "/contact" component = {Contact}></PublicRoute>
                 <ProtectedRoute exact path = "/dashboard" component = {Dahsboard}></ProtectedRoute>
-                <Route component = {PageNotFound}></Route>
+                <ProtectedRoute exact path = "/add_product" component = {AddProduct}></ProtectedRoute>
+                <PublicRoute component = {PageNotFound}></PublicRoute>
             </Switch>
         </BrowserRouter>
     )

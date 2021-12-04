@@ -1,9 +1,19 @@
 .sidebar{
     width: 150px;
-    background-color: #000;
+    background-color: #333;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 3em;
+    padding: 1em
 }
 .sidebar a{
     text-decoration: none;
     color: #fff;
     display: block;
+    margin : .4em 0;
+}
+.sidebar hr{
+    color: #fff;
+    height: 2px;
 }
