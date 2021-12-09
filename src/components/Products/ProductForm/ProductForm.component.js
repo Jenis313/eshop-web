@@ -54,7 +54,7 @@ export class ProductForm extends Component{
     }
     handleChange(e){
         let {name, value, type, checked} = e.target;
-        if(type === 'checked'){
+        if(type === 'checkbox'){
             value = checked
         }
         this.setState((prevState) => (
@@ -79,6 +79,20 @@ export class ProductForm extends Component{
     }
     render(){
         const {title, description, isSubmitting} = this.props;
+        let discountContent = this.state.data.discountedItem
+         ? <>
+                <label>Discount type</label>
+                <select name = "discountType" value = {this.state.data.discountType} className = "form-control" onChange = {this.handleChange}>
+                    <option value = "">Select option type</option>
+                    <option value = "percentage">Percentage</option>
+                    <option value = "quantity">Quantity</option>
+                    <option value = "value">Value</option>
+                </select>
+                <label>Discount Value</label>
+                <input type="text" name="discountValue" placeholder="Discount Value" className="form-control" onChange={this.handleChange}></input>
+                <br />
+           </> 
+         : ""
         return (
             <>
                 <h2>{title}</h2>
@@ -88,7 +102,7 @@ export class ProductForm extends Component{
                     <input type = 'text' name = 'name' placeholder = "Name" className = 'form-control' onChange = {this.handleChange}></input>
 
                     <label>Description</label>
-                    <input type = 'text' name = 'description' placeholder = "Description" className = 'form-control' onChange = {this.handleChange}></input>
+                    <textarea rows = {8} name = 'description' placeholder = "Description" className = 'form-control' onChange = {this.handleChange}></textarea>
 
                     <label>Category</label>
                     <input type = 'text' name = 'category' placeholder = "Category" className = 'form-control' onChange = {this.handleChange}></input>
@@ -114,39 +128,39 @@ export class ProductForm extends Component{
                     <label>SkU Number</label>
                     <input type = 'text' name = 'sku' placeholder = "SkU Number" className = 'form-control' onChange = {this.handleChange}></input>
                     <label>Manu Date</label>
-                    <input type = 'text' name = 'manuDate' placeholder = "Manu Date" className = 'form-control' onChange = {this.handleChange}></input>
+                    <input type = 'date' name = 'manuDate' placeholder = "Manu Date" className = 'form-control' onChange = {this.handleChange}></input>
                     <label>Expiry Date</label>
-                    <input type = 'text' name = 'expiryDate' placeholder = "Expiry Date" className = 'form-control' onChange = {this.handleChange}></input>
+                    <input type = 'date' name = 'expiryDate' placeholder = "Expiry Date" className = 'form-control' onChange = {this.handleChange}></input>
                     <label>Sales Date</label>
-                    <input type = 'text' name = 'salesDate' placeholder = "Sales Date" className = 'form-control' onChange = {this.handleChange}></input>
+                    <input type = 'date' name = 'salesDate' placeholder = "Sales Date" className = 'form-control' onChange = {this.handleChange}></input>
                     <label>Purchased Date</label>
-                    <input type = 'text' name = 'purchasedDate' placeholder = "Purchased Date" className = 'form-control' onChange = {this.handleChange}></input>
+                    <input type = 'date' name = 'purchasedDate' placeholder = "Purchased Date" className = 'form-control' onChange = {this.handleChange}></input>
 
+                    <input type="checkbox" name="discountedItem" onChange={this.handleChange}></input>
                     <label>&nbsp;Discounted Item</label>
                     <br />
+                    {discountContent}
                     <label>Offers</label>
                     <input type="text" name="offers" placeholder="Offers" className="form-control" onChange={this.handleChange}></input>
                     <label>Tags</label>
                     <input type="text" name="tags" placeholder="Tags" className="form-control" onChange={this.handleChange}></input>
                     <label>Origin</label>
                     <input type="text" name="origin" placeholder="Origin" className="form-control" onChange={this.handleChange}></input>
-                    <input type="checkbox" checked={false} name="warrentyStatus" onChange={this.handleChange}></input>
+                    <input type="checkbox" checked={this.state.data.warrentyStatus} name="warrentyStatus" onChange={this.handleChange}></input>
                     <label> &nbsp;Warrenty Status</label>
                     <br />
-
-                    <label>Warrenty Period</label>
-                    <input type="text" name="warrentyPeriod" placeholder="Warrenty Period" className="form-control" onChange={this.handleChange}></input>
+                    {
+                        this.state.data.warrentyStatus && (
+                            <>
+                                <label>Warrenty Period</label>
+                                <input type="text" name="warrentyPeriod" placeholder="Warrenty Period" className="form-control" onChange={this.handleChange}></input>  
+                            </>
+                        )
+                        
+                    }
+                    
                     <input type="checkbox" checked={false} name="isReturnEligible" onChange={this.handleChange}></input>
                     <label> &nbsp;Return Eligible</label>
-                    <br></br>
-
-                
-
-
-                    <label>Category</label>
-                    <input type = 'text' name = 'category' placeholder = "Category" className = 'form-control' onChange = {this.handleChange}></input>
-                    <label>Category</label>
-                    <input type = 'text' name = 'category' placeholder = "Category" className = 'form-control' onChange = {this.handleChange}></input>
                     <hr />
 
                     <SubmitButton 

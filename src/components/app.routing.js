@@ -5,6 +5,7 @@ import {Header} from './Common/Header/Header.component';
 import PageNotFound from "./Common/NotFound/PageNotFound.component";
 import Sider from "./Common/Sidebar/Sider.component";
 import AddProduct from "./Products/AddProduct/AddProduct.component";
+import { ViewProducts } from "./Products/ViewProducts/ViewProducts.component";
 import { Dahsboard } from "./Users/Dashboard.component";
 
 const Home = (props) => {
@@ -60,7 +61,7 @@ const PublicRoute = ({component : Component, ...rest}) => {
         <Route {...rest} render = {(routeProps) => {
             return (
                 <div>
-                    <Header></Header>
+                    <Header isLoggedIn = {localStorage.getItem('token')}></Header>
                     <div className = "main">
                         <Component {...routeProps}></Component>
                     </div>
@@ -85,6 +86,7 @@ function AppRouting(props){
                 <PublicRoute exact path = "/contact" component = {Contact}></PublicRoute>
                 <ProtectedRoute exact path = "/dashboard" component = {Dahsboard}></ProtectedRoute>
                 <ProtectedRoute exact path = "/add_product" component = {AddProduct}></ProtectedRoute>
+                <ProtectedRoute exact path = "/view_product" component = {ViewProducts}></ProtectedRoute>
                 <PublicRoute component = {PageNotFound}></PublicRoute>
             </Switch>
         </BrowserRouter>

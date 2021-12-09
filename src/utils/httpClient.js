@@ -9,21 +9,25 @@ const http = axios.create({
     timeout: 20000,
     timeoutErrorMessage: 'Request Timeout'
 })
-const getHeaders = () => {
+const getHeaders = (isSecured = false) => {
     let options = {
         'Content-Type' : 'application/json'
     }
+    if(isSecured){
+        // If we want something to be accessed only if there's  valid token then we pass isSecured parameter as true whenever we call httpClient
+        options['Authorization'] = localStorage.getItem('token')
+    }
     return options;
 }
-const GET = (url, params = {}) => {
+const GET = (url, isSecured = false, params = {}) => {
     return http.get(url, {
-        headers : getHeaders(),
+        headers : getHeaders(isSecured),
         params
     })
 }
-const POST = (url, data, params = {}) => {
+const POST = (url, data, isSecured = false, params = {}) => {
     return http.post(url, data, {
-        headers : getHeaders(),
+        headers : getHeaders(isSecured),
         params
     })
 }
@@ -33,9 +37,9 @@ const PUT = (url, data, params = {}) => {
         params
     })
 }
-const DELETE = (url, params) => {
+const DELETE = (url, isSecured = false, params) => {
     return http.delete(url, {
-        headers : getHeaders(),
+        headers : getHeaders(isSecured),
         params
     })
 }
