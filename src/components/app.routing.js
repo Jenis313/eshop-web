@@ -5,6 +5,7 @@ import {Header} from './Common/Header/Header.component';
 import PageNotFound from "./Common/NotFound/PageNotFound.component";
 import Sider from "./Common/Sidebar/Sider.component";
 import AddProduct from "./Products/AddProduct/AddProduct.component";
+import { EditProduct } from "./Products/EditProduct/EditProduct.component";
 import { ViewProducts } from "./Products/ViewProducts/ViewProducts.component";
 import { Dahsboard } from "./Users/Dashboard.component";
 
@@ -87,6 +88,7 @@ function AppRouting(props){
                 <ProtectedRoute exact path = "/dashboard" component = {Dahsboard}></ProtectedRoute>
                 <ProtectedRoute exact path = "/add_product" component = {AddProduct}></ProtectedRoute>
                 <ProtectedRoute exact path = "/view_product" component = {ViewProducts}></ProtectedRoute>
+                <ProtectedRoute exact path = "/edit_product/:id" component = {EditProduct}></ProtectedRoute>
                 <PublicRoute component = {PageNotFound}></PublicRoute>
             </Switch>
         </BrowserRouter>

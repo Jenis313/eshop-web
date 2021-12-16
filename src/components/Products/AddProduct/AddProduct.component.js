@@ -11,24 +11,25 @@ class AddProduct extends Component{
         }
         this.add = this.add.bind(this)
     }
-    add(data){
+    add(data, files){
         console.log('data in product component', data)
         // http call
         this.setState({
             isSubmitting : true
         })
-        httpClient.POST('/product', data, true)
-            .then((response) => {
-                notify.showSuccess('Product added successfully!')
-                this.props.history.push('view_product')
-            })
-            .catch((err) => {
-                // console.log('error is-->', err.response);
-                this.setState({
-                    isSubmitting : false
-                })
-                ErrorHander(err);
-            })
+        httpClient.UPLOAD('/product', data,files)
+        // httpClient.POST('/product', data, true)
+        //     .then((response) => {
+        //         notify.showSuccess('Product added successfully!')
+        //         this.props.history.push('view_product')
+        //     })
+        //     .catch((err) => {
+        //         // console.log('error is-->', err.response);
+        //         this.setState({
+        //             isSubmitting : false
+        //         })
+        //         ErrorHander(err);
+        //     })
         
     }
     render(){

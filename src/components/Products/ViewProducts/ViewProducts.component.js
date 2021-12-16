@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { httpClient } from '../../../utils/httpClient';
-import { notify } from '../../../utils/notify';
-import {FaPencilAlt, FaTrashAlt} from 'react-icons/fa'
-import { ErrorHander } from '../../../utils/error.handler';
+import { httpClient } from '../../../utils/httpClient'; //to make requests
+import { notify } from '../../../utils/notify'; //to notify something
+import {FaPencilAlt, FaTrashAlt} from 'react-icons/fa' //icons
+import { ErrorHander } from '../../../utils/error.handler'; //to render error page
 import { Link } from 'react-router-dom';
 import { Loader } from '../../Common/Loader/Loader.component';
+import { formatDate } from '../../../utils/dateUtils';
 export class ViewProducts extends Component {
     constructor() {
         super()
@@ -71,19 +72,19 @@ export class ViewProducts extends Component {
                     <th>Name</th>
                     <th>Category</th>
                     <th>Price</th>
-                    <th>Color</th>
+                    <th>Created At</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 {(this.state.products || []).map((item, index) => {
                     return (
-                        <tr>
+                        <tr key = {index}>
                             <td>{index + 1}</td>
                             <td><Link to = {`/product_details/${item._id}`}>{item.name}</Link></td>
                             <td>{item.category}</td>
                             <td>{item.price}</td>
-                            <td>{item.color}</td>
+                            <td>{formatDate(item.createdAt)}</td>
                             <td>
                                 <span onClick = {() => this.editProduct(item._id)} title = "Edit product" style = {{color: 'blue'}}>
                                     <FaPencilAlt />
