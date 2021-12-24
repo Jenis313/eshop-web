@@ -45,26 +45,36 @@ const DELETE = (url, isSecured = false, params) => {
     })
 }
 const UPLOAD = (url, data = {}, files = []) => {
-    // for uploading files we are usin xmlhttprequest
-    // we are sending value as form data
-    const xhr = new XMLHttpRequest();
-    const formData = new FormData();
+    return new Promise((resolve, reject) => {
+        // for uploading files we are usin xmlhttprequest
+        // we are sending value as form data
+        const xhr = new XMLHttpRequest();
+        const formData = new FormData();
 
-    // append files in form data
-    // This will work for both single and multiple files
-    files.forEach(item => {
-        formData.append('images', item, item.name)
+        // append files in form data
+        // This will work for both single and multiple files
+        files.forEach(item => {
+            formData.append('images', item, item.name)
+        })
+        // append textual data in formdata
+        for(let key in data){
+            formData.append(key, data[key])
+        }
+        xhr.onreadystatechange = () => {
+            // console.log(xhr.readyState)
+            if(xhr.readyState === 4){
+                console.log('status--> ',xhr.status)
+                if(xhr.status === 200){
+                    resolve(xhr.response)
+                }else{
+                    reject(xhr.response)
+                }
+            }
+        }
+        xhr.open('POST', `${BASE_URL}${url}?token=${localStorage.getItem('token')}`, true);
+        xhr.send(formData);
+
     })
-    // append textual data in formdata
-    for(let key in data){
-        formData.append(key, data[key])
-    }
-    xhr.onreadystatechange = () => {
-        console.log(xhr.readyState)
-    }
-    xhr.open('POST', `${BASE_URL}${url}?token=${localStorage.getItem('token')}`, true);
-    xhr.send(formData);
-
 }
 
 export const httpClient = {

@@ -19,17 +19,17 @@ class AddProduct extends Component{
         })
         httpClient.UPLOAD('/product', data,files)
         // httpClient.POST('/product', data, true)
-        //     .then((response) => {
-        //         notify.showSuccess('Product added successfully!')
-        //         this.props.history.push('view_product')
-        //     })
-        //     .catch((err) => {
-        //         // console.log('error is-->', err.response);
-        //         this.setState({
-        //             isSubmitting : false
-        //         })
-        //         ErrorHander(err);
-        //     })
+            .then((response) => {
+                notify.showSuccess('Product added successfully!')
+                this.props.history.push('view_product')
+            })
+            .catch((err) => {
+                // console.log('error is-->', err.response);
+                this.setState({
+                    isSubmitting : false
+                })
+                ErrorHander(err);
+            })
         
     }
     render(){

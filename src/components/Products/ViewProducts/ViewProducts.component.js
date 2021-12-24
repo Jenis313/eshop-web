@@ -6,6 +6,9 @@ import { ErrorHander } from '../../../utils/error.handler'; //to render error pa
 import { Link } from 'react-router-dom';
 import { Loader } from '../../Common/Loader/Loader.component';
 import { formatDate } from '../../../utils/dateUtils';
+
+const IMG_URL = process.env.REACT_APP_IMG_URL;
+console.log('imggggg->', IMG_URL)
 export class ViewProducts extends Component {
     constructor() {
         super()
@@ -73,6 +76,7 @@ export class ViewProducts extends Component {
                     <th>Category</th>
                     <th>Price</th>
                     <th>Created At</th>
+                    <th>Images</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -85,6 +89,9 @@ export class ViewProducts extends Component {
                             <td>{item.category}</td>
                             <td>{item.price}</td>
                             <td>{formatDate(item.createdAt)}</td>
+                            <td>
+                                <img src = {`${IMG_URL}${item.images[0]}`} alt = 'product.jpg' width = '50px'></img>
+                            </td>
                             <td>
                                 <span onClick = {() => this.editProduct(item._id)} title = "Edit product" style = {{color: 'blue'}}>
                                     <FaPencilAlt />
