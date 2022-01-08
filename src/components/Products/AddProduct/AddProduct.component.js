@@ -11,13 +11,14 @@ class AddProduct extends Component{
         }
         this.add = this.add.bind(this)
     }
+
     add(data, files){
         console.log('data in product component', data)
         // http call
         this.setState({
             isSubmitting : true
         })
-        httpClient.UPLOAD('/product', data,files)
+        httpClient.UPLOAD('POST','/product', data,files)
         // httpClient.POST('/product', data, true)
             .then((response) => {
                 notify.showSuccess('Product added successfully!')

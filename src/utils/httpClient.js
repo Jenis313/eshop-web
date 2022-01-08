@@ -44,7 +44,7 @@ const DELETE = (url, isSecured = false, params) => {
         params
     })
 }
-const UPLOAD = (url, data = {}, files = []) => {
+const UPLOAD = (method, url, data = {}, files = []) => {
     return new Promise((resolve, reject) => {
         // for uploading files we are usin xmlhttprequest
         // we are sending value as form data
@@ -71,7 +71,7 @@ const UPLOAD = (url, data = {}, files = []) => {
                 }
             }
         }
-        xhr.open('POST', `${BASE_URL}${url}?token=${localStorage.getItem('token')}`, true);
+        xhr.open(method, `${BASE_URL}${url}?token=${localStorage.getItem('token')}`, true);
         xhr.send(formData);
 
     })

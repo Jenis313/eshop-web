@@ -42,12 +42,16 @@ export class EditProduct extends Component {
         }
        
     }
-    edit(data){
+    edit(data, filesToUpload = [], filesToRemove = []){
         // console.log('dataaaaaa',data);
         this.setState({
             isSubmitting: true
         })
-        httpClient.PUT(`/product/${this.productId}`, data, true)
+        const requestData = {
+            ...data,
+            filesToRemove
+        }
+        httpClient.UPLOAD('PUT',`/product/${this.productId}`, requestData, filesToUpload, true)
         .then((response) => {
             notify.showInfo('Product Updated successfully!');
             this.props.history.push('/view_product')
@@ -67,3 +71,4 @@ export class EditProduct extends Component {
         return content
     }
 }
+

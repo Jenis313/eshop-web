@@ -3,6 +3,8 @@ import React, {Component} from "react";
 import { FaTrashAlt } from "react-icons/fa";
 import { formatDate } from "../../../utils/dateUtils";
 import SubmitButton from "../../Common/SubmitBtn/SubmitBtn.component";
+const IMG_URL = process.env.REACT_APP_IMG_URL
+console.log('imgurl ---',IMG_URL)
 
 const defaultForm = {
 name : '',
@@ -50,7 +52,8 @@ export class ProductForm extends Component{
             },
             isValidForm : false,
             filesToUpload : [],
-            filesToPreview : []
+            filesToPreview : [],
+            filesToRemove : []
         }
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleChange = this.handleChange.bind(this)
@@ -58,11 +61,15 @@ export class ProductForm extends Component{
     }
 
     componentDidMount(){
-        const {productData} = this.props //state of editProduct which means this is coming from server
+        const {productData} = this.props //state of editProduct which means this is coming from server to another component to this component
         // console.log('proddd', productData)
         if(productData){
             console.log('Product data---> ', productData)
             // edit case
+            let previousImages = [];
+            if(productData.images){
+                previousImages = productData.images.map((item) => `${IMG_URL}/${item}`)
+            }
             this.setState({
                 data: {
                     ...ProductForm, //if nothing coming from server
@@ -84,7 +91,8 @@ export class ProductForm extends Component{
                     // https://stackoverflow.com/questions/47012169/a-component-is-changing-an-uncontrolled-input-of-type-text-to-be-controlled-erro
 
 
-                }
+                },
+                filesToPreview : previousImages
             })
         }
 
@@ -95,14 +103,13 @@ export class ProductForm extends Component{
         let {name, value, type, checked, files} = e.target;
         if(type === 'file'){
             console.log('files--> ', files)
-            const {filesToUpload, filesToPreview} = this.state;
+            const {filesToUpload} = this.state;
             filesToUpload.push(files[0])
-            filesToPreview.push(URL.createObjectURL(files[0]))
+
             this.setState({
                 filesToUpload,
-                filesToPreview
             })
-            console.log("filestouppre-->", filesToUpload, filesToPreview)
+            console.log("filestouppre-->", filesToUpload)
         }
         if(type === 'checkbox'){
             value = checked
@@ -125,17 +132,30 @@ export class ProductForm extends Component{
 
     handleSubmit(e){
         e.preventDefault();
-        this.props.submitCallback(this.state.data, this.state.filesToUpload);
+        this.props.submitCallback(this.state.data, this.state.filesToUpload, this.state.filesToRemove);
        
     }
-    removeImage = (index) => {
+    removeImage = (type, index, file) => {
+        const {filesToPreview, filesToUpload, filesToRemove} = this.state;
+        // console.log('File is --> ', file);
+        if(type === 'new'){
+            // remove file from fileToUpload
+            filesToUpload.splice(index, 1);
+
+        }
+        if(type === 'old'){
+            // maintain different allocation to store information about file to remove from server
+            filesToPreview.splice(index, 1);
+            filesToRemove.push(file)
+
+        }
+        // Index is needed to remove image from filestopreview 
+        
         // Todo for update
-        const {filesToPreview, filesToUpload} = this.state;
-        filesToPreview.splice(index, 1);
-        filesToUpload.splice(index, 1);
         this.setState({
             filesToPreview,
-            filesToUpload
+            filesToUpload,
+            filesToRemove
         })
     }
     render(){
@@ -225,12 +245,22 @@ export class ProductForm extends Component{
                     <input type="checkbox" checked={data.isReturnEligible} name="isReturnEligible" onChange={this.handleChange}></input>
                     <label> &nbsp;Return Eligible</label>
                     <label>Choose images</label>
-                    <input type = "file" className = "form-control" onChange = {this.handleChange} ></input>
+                    <input type = "file" className = "form-control" onChange = {this.handleChange} accept="image/*"></input>
                     {
                         this.state.filesToPreview.map((file, index) => (
                             <React.Fragment key = {index}>
                                 <img width = '100px'  alt = 'preview' src = {file}></img>
-                                <span onClick = {() => {this.removeImage(index) }} title = "Remove image"  style = {{marginLeft: "10px", marginRight : "20px"}}>
+                                <span onClick = {() => {this.removeImage('old', index, file) }} title = "Remove image"  style = {{marginLeft: "10px", marginRight : "20px"}}>
+                                    <FaTrashAlt></FaTrashAlt>
+                                </span>
+                            </React.Fragment>
+                        ))
+                    }
+                     {
+                        this.state.filesToUpload.map((file, index) => (
+                            <React.Fragment key = {index}>
+                                <img width = '100px'  alt = 'preview' src = {URL.createObjectURL(file)}></img>
+                                <span onClick = {() => {this.removeImage('new', index) }} title = "Remove image"  style = {{marginLeft: "10px", marginRight : "20px"}}>
                                     <FaTrashAlt></FaTrashAlt>
                                 </span>
                             </React.Fragment>
@@ -247,3 +277,12 @@ export class ProductForm extends Component{
         )
     }
 }
+
+// Current scenario
+// Two different allocations to hald images
+// filesToUpload -> to upload new image
+// filesToPreview -> to preview selected new image
+
+// Todo 
+// once existing image is removed from UI it should be removed from database as well
+// once newly added image is removed from edit screen it shouldn't be uploaded
