@@ -49,7 +49,8 @@ export class EditProduct extends Component {
         })
         const requestData = {
             ...data,
-            filesToRemove
+            filesToRemove,
+            vendor : data.vendor._id
         }
         httpClient.UPLOAD('PUT',`/product/${this.productId}`, requestData, filesToUpload, true)
         .then((response) => {

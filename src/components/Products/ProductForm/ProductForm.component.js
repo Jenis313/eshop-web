@@ -68,7 +68,7 @@ export class ProductForm extends Component{
             // edit case
             let previousImages = [];
             if(productData.images){
-                previousImages = productData.images.map((item) => `${IMG_URL}/${item}`)
+                previousImages = productData.images.map((item) => `${IMG_URL}${item}`)
             }
             this.setState({
                 data: {
